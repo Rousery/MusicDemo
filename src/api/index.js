@@ -27,11 +27,20 @@ export function getDJ() {
  * offset : 偏移数量，用于分页 , 如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认为 0
  * area : ALL:全部,ZH:华语,EA:欧美,KR:韩国,JP:日本
  */
-
 export function getAlbum(params) {
     return request({
         method: 'get',
         url: '/album/new',
         params
+    })
+}
+
+/**歌单分类
+ * 说明 : 调用此接口,可获取歌单分类,包含 category 信息
+ */
+export function getCats() {
+    return request({
+        method: 'get',
+        url: '/playlist/catlist',
     })
 }

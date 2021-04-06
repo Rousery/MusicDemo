@@ -40,33 +40,22 @@
 
 <script>
 import List from "@/components/List";
-import axios from "@/plugins/axios.js"; /*引入封装的axios*/
+import { getCats } from "@/api";
 import { mapState, mapMutations, mapGetters } from "vuex";
 export default {
   data() {
     return {
       title: "发现",
       activeCat: "全部",
-      axios_arr: [axios.get("/playlist/catlist")],
       categories: {},
-      type: {},
-      isDisplay: false,
-      current_click: null
+      isDisplay: false
     };
   },
   components: {
     List
   },
   mounted() {
-    let that = this;
-
-    axios.all(that.axios_arr).then(
-      axios.spread(function() {
-        that.categories = arguments[0].categories;
-        that.type = arguments[0].sub;
-        localStorage.setItem("cats", JSON.stringify(that.type));
-      })
-    );
+    this.loadData();
   },
   computed: {
     ...mapState(["buttonList"]),
@@ -74,6 +63,12 @@ export default {
   },
   methods: {
     ...mapMutations(["handleButton"]),
+    loadData() {
+      getCats().then(data => {
+        this.categories = data.categories;
+        localStorage.setItem("cats", JSON.stringify(data.sub));
+      });
+    },
     handleClick() {
       this.activeCat = null;
       this.isDisplay = !this.isDisplay;
